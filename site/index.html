@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jmzx.uk</title>
+<meta name="description" content="jmzx — placeholder homepage.">
+<meta name="theme-color" content="#0c0c0c">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  /* Monochrome sibling of fizx.uk (blue-green) and upleb.uk (amber): same layout, neutral greys. */
+  :root {
+    --bg: #0c0c0c; --card: #151515; --border: #262626;
+    --muted: #7a7a7a; --fg: #f5f5f5; --accent: #e5e5e5;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--fg); font-family: var(--sans);
+    min-height: 100vh; display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 64rem; margin: 0 auto; width: 100%; }
+  .mono { font-family: var(--mono); }
+
+  nav, footer { padding: 1rem 1.5rem; border-color: var(--border); border-style: solid; border-width: 0; }
+  nav { border-bottom-width: 1px; }
+  footer { border-top-width: 1px; }
+  nav .wrap { display: flex; align-items: center; gap: 1rem; font: 12px var(--mono); }
+  .brand { color: rgb(122 122 122 / .5); }
+  .links { flex: 1; display: flex; justify-content: center; gap: .75rem; overflow-x: auto; }
+  .links a, footer a { color: var(--muted); transition: color .15s; white-space: nowrap; }
+  .links a:hover, footer a:hover { color: var(--accent); }
+
+  main { flex: 1; padding: 2.5rem 1.5rem; }
+
+  .hero {
+    background: var(--card); border: 1px solid var(--border); min-height: 110px;
+    display: grid; grid-template-columns: auto 1fr 1fr; margin-bottom: 2.5rem;
+  }
+  .hero > div { padding: .75rem 1rem; min-width: 0; }
+  .hero > div + div { border-left: 1px solid var(--border); }
+  h1 { margin: 0; font-weight: 700; letter-spacing: -.025em; font-size: clamp(28px, 5vw, 40px); line-height: 1.2; }
+  h1 span {
+    display: inline-block;
+    /* One gradient spanning the word (~2.07em wide, measured): each letter shows its own slice. */
+    background: linear-gradient(to right, #fafafa, #737373) 0 0 / 2.07em 100% no-repeat;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    animation: fly .35s cubic-bezier(.33,1,.68,1) both;
+  }
+  h1 span:nth-child(2) { animation-delay: .28s; background-position-x: -.253em; }
+  h1 span:nth-child(3) { animation-delay: .57s; background-position-x: -1.09em; }
+  h1 span:nth-child(4) { animation-delay: .85s; background-position-x: -1.555em; }
+  @keyframes fly { from { transform: translateX(-80px); opacity: 0; } }
+
+  .label { font: 10px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: rgb(122 122 122 / .6); margin-bottom: .4rem; }
+  .pill {
+    display: flex; align-items: center; gap: .4rem; font: 11px var(--mono);
+    padding: .25rem .5rem; border: 1px solid var(--border); background: rgb(12 12 12 / .4);
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 4px rgb(229 229 229 / .4); flex-shrink: 0; }
+  .pill .host { flex: 1; color: rgb(245 245 245 / .9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip { font-size: 9px; padding: 0 .25rem; border: 1px solid rgb(122 122 122 / .4); color: rgb(122 122 122 / .8); }
+  .sub { margin-top: .4rem; font: 10px var(--mono); color: rgb(122 122 122 / .6); }
+
+  h2 { font: 10px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 .75rem; font-weight: 400; }
+  .panel {
+    font: 11px/1.6 var(--mono); color: rgb(122 122 122 / .75);
+    padding: 1rem .75rem; border: 1px solid var(--border); background: rgb(21 21 21 / .4);
+  }
+  .panel b { color: var(--accent); font-weight: 400; }
+
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1rem; font: 12px var(--mono); }
+  footer .tld { color: rgb(122 122 122 / .4); }
+  .made { color: rgb(163 163 163 / .6); }
+
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero > div + div { border-left: 0; border-top: 1px solid var(--border); }
+    .hero > .spacer { display: none; }
+    nav .wrap, footer .wrap { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) { h1 span { animation: none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="brand">jmzx</span>
+    <div class="links">
+      <a href="https://fizx.uk">fizx</a>
+      <a href="https://upleb.uk">upleb</a>
+      <a href="https://glmps.fizx.uk">glmps</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="hero">
+      <div><h1 aria-label="jmzx"><span>j</span><span>m</span><span>z</span><span>x</span></h1></div>
+      <div>
+        <div class="label">status</div>
+        <div class="pill">
+          <span class="dot"></span>
+          <span class="host">jmzx.uk</span>
+          <span class="chip">nginx</span>
+        </div>
+        <div class="sub">static · no js · served from 103.141.13.110</div>
+      </div>
+      <div class="spacer"></div>
+    </div>
+
+    <section>
+      <h2>placeholder</h2>
+      <p class="panel">
+        Nothing here yet. <b>jmzx.uk</b> is up, and more is on the way.
+      </p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><a href="https://fizx.uk">fizx<span class="tld">.uk</span></a></div>
+    <span class="made">✦ hand-built html</span>
+  </div>
+</footer>
+
+</body>
+</html>
