@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>jmzx.uk</title>
-<meta name="description" content="jmzx — placeholder homepage.">
+<meta name="description" content="jmzx: small, single-purpose apps for cataloguing, playing, sampling and publishing a music library over Nostr, plus a few dev tools.">
 <meta name="theme-color" content="#0c0c0c">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <style>
@@ -16,6 +16,7 @@
     --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
   *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   html, body { margin: 0; }
   body {
     background: var(--bg); color: var(--fg); font-family: var(--sans);
@@ -24,7 +25,6 @@
   }
   a { color: inherit; text-decoration: none; }
   .wrap { max-width: 64rem; margin: 0 auto; width: 100%; }
-  .mono { font-family: var(--mono); }
 
   nav, footer { padding: 1rem 1.5rem; border-color: var(--border); border-style: solid; border-width: 0; }
   nav { border-bottom-width: 1px; }
@@ -32,14 +32,16 @@
   nav .wrap { display: flex; align-items: center; gap: 1rem; font: 12px var(--mono); }
   .brand { color: rgb(122 122 122 / .5); }
   .links { flex: 1; display: flex; justify-content: center; gap: .75rem; overflow-x: auto; }
-  .links a, footer a { color: var(--muted); transition: color .15s; white-space: nowrap; }
-  .links a:hover, footer a:hover { color: var(--accent); }
+  .links a, footer a, .gh { color: var(--muted); transition: color .15s; white-space: nowrap; }
+  .links a:hover, footer a:hover, .gh:hover { color: var(--accent); }
+  .gh { display: inline-flex; }
 
   main { flex: 1; padding: 2.5rem 1.5rem; }
 
+  /* Hero */
   .hero {
     background: var(--card); border: 1px solid var(--border); min-height: 110px;
-    display: grid; grid-template-columns: auto 1fr 1fr; margin-bottom: 2.5rem;
+    display: grid; grid-template-columns: auto 1fr; margin-bottom: 3rem;
   }
   .hero > div { padding: .75rem 1rem; min-width: 0; }
   .hero > div + div { border-left: 1px solid var(--border); }
@@ -55,35 +57,60 @@
   h1 span:nth-child(3) { animation-delay: .57s; background-position-x: -1.09em; }
   h1 span:nth-child(4) { animation-delay: .85s; background-position-x: -1.555em; }
   @keyframes fly { from { transform: translateX(-80px); opacity: 0; } }
+  .intro { font-size: 15px; line-height: 1.6; color: rgb(245 245 245 / .85); margin: .1rem 0 .5rem; max-width: 40rem; }
+  .sub { font: 10px var(--mono); color: rgb(122 122 122 / .6); }
 
-  .label { font: 10px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: rgb(122 122 122 / .6); margin-bottom: .4rem; }
-  .pill {
-    display: flex; align-items: center; gap: .4rem; font: 11px var(--mono);
-    padding: .25rem .5rem; border: 1px solid var(--border); background: rgb(12 12 12 / .4);
-  }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 4px rgb(229 229 229 / .4); flex-shrink: 0; }
-  .pill .host { flex: 1; color: rgb(245 245 245 / .9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .chip { font-size: 9px; padding: 0 .25rem; border: 1px solid rgb(122 122 122 / .4); color: rgb(122 122 122 / .8); }
-  .sub { margin-top: .4rem; font: 10px var(--mono); color: rgb(122 122 122 / .6); }
+  /* Sections */
+  section { margin-bottom: 3rem; scroll-margin-top: 1rem; }
+  .head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
+  h2 { font: 10px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0; font-weight: 400; }
+  .head a { font: 10px var(--mono); color: rgb(122 122 122 / .6); }
+  .head a:hover { color: var(--accent); }
+  .lede { font-size: 14px; line-height: 1.65; color: rgb(245 245 245 / .75); margin: 0 0 1rem; max-width: 46rem; }
+  .lede b { color: var(--fg); font-weight: 600; }
 
-  h2 { font: 10px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 .75rem; font-weight: 400; }
-  .panel {
-    font: 11px/1.6 var(--mono); color: rgb(122 122 122 / .75);
-    padding: 1rem .75rem; border: 1px solid var(--border); background: rgb(21 21 21 / .4);
+  /* Publish → read flow, as text (first candidate for a diagram later) */
+  .flow {
+    font: 11px/1.9 var(--mono); color: var(--muted);
+    border: 1px solid var(--border); background: rgb(21 21 21 / .4);
+    padding: .6rem .8rem; margin-bottom: 1rem; overflow-x: auto; white-space: nowrap;
   }
-  .panel b { color: var(--accent); font-weight: 400; }
+  .flow b { color: var(--accent); font-weight: 400; }
+  .flow i { font-style: normal; color: rgb(122 122 122 / .45); padding: 0 .35rem; }
+
+  /* App cards */
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .card { background: var(--card); padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+  .card-top { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+  .name { font: 600 15px var(--mono); color: var(--fg); }
+  .role { font: 10px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: rgb(122 122 122 / .75); }
+  .card p { margin: 0; font-size: 13px; line-height: 1.6; color: rgb(245 245 245 / .72); }
+  .card-foot { margin-top: auto; padding-top: .35rem; display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; }
+  .chip { font: 9px var(--mono); padding: .05rem .3rem; border: 1px solid rgb(122 122 122 / .35); color: rgb(122 122 122 / .85); letter-spacing: .04em; }
+  .chip.hi { border-color: rgb(229 229 229 / .45); color: var(--accent); }
+  .out { margin-left: auto; font: 10px var(--mono); color: rgb(122 122 122 / .7); transition: color .15s; }
+  .out:hover { color: var(--accent); }
+  .out + .out { margin-left: .6rem; }
+
+  /* Small-print rows for the supporting apps */
+  .minor { border: 1px solid var(--border); border-top: 0; background: rgb(21 21 21 / .4); }
+  .minor div { display: grid; grid-template-columns: 5.5rem 1fr auto; gap: .75rem; align-items: baseline; padding: .5rem 1rem; font-size: 12.5px; color: rgb(245 245 245 / .65); }
+  .minor div + div { border-top: 1px solid var(--border); }
+  .minor .name { font-size: 12.5px; font-weight: 400; color: var(--accent); }
 
   footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1rem; font: 12px var(--mono); }
+  footer .sites { display: flex; gap: 1rem; }
   footer .tld { color: rgb(122 122 122 / .4); }
   .made { color: rgb(163 163 163 / .6); }
 
   @media (max-width: 640px) {
-    .hero { grid-template-columns: 1fr; }
+    .hero, .grid { grid-template-columns: 1fr; }
     .hero > div + div { border-left: 0; border-top: 1px solid var(--border); }
-    .hero > .spacer { display: none; }
+    .minor div { grid-template-columns: 1fr auto; }
+    .minor div > span:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
     nav .wrap, footer .wrap { font-size: 11px; }
   }
-  @media (prefers-reduced-motion: reduce) { h1 span { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { h1 span { animation: none; } html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
@@ -92,41 +119,147 @@
   <div class="wrap">
     <span class="brand">jmzx</span>
     <div class="links">
-      <a href="https://fizx.uk">fizx</a>
-      <a href="https://upleb.uk">upleb</a>
-      <a href="https://glmps.fizx.uk">glmps</a>
+      <a href="#suite">n-suite</a>
+      <a href="#web">web</a>
+      <a href="#tools">tools</a>
     </div>
+    <a class="gh" href="https://github.com/xjmzx" target="_blank" rel="noopener noreferrer" title="xjmzx on GitHub" aria-label="xjmzx on GitHub">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.54-3.88-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39.98 0 1.97.13 2.89.39 2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.69.41.36.77 1.07.77 2.16 0 1.56-.01 2.82-.01 3.21 0 .31.21.68.8.56 4.56-1.52 7.85-5.83 7.85-10.91C23.5 5.65 18.35.5 12 .5z"/></svg>
+    </a>
   </div>
 </nav>
 
 <main>
   <div class="wrap">
+
     <div class="hero">
       <div><h1 aria-label="jmzx"><span>j</span><span>m</span><span>z</span><span>x</span></h1></div>
       <div>
-        <div class="label">status</div>
-        <div class="pill">
-          <span class="dot"></span>
-          <span class="host">jmzx.uk</span>
-          <span class="chip">nginx</span>
-        </div>
-        <div class="sub">static · no js · served from 103.141.13.110</div>
+        <p class="intro">Small, single-purpose apps for cataloguing, playing, sampling and publishing a music library, with Nostr as the shared layer. Plus a couple of tools built along the way.</p>
+        <div class="sub">desktop: Tauri · mobile: Capacitor · web: React</div>
       </div>
-      <div class="spacer"></div>
     </div>
 
-    <section>
-      <h2>placeholder</h2>
-      <p class="panel">
-        Nothing here yet. <b>jmzx.uk</b> is up, and more is on the way.
+    <!-- The n-suite -->
+    <section id="suite">
+      <div class="head">
+        <h2>the n-suite</h2>
+        <a href="https://github.com/xjmzx/ndisc/blob/main/SUITE.md" target="_blank" rel="noopener noreferrer">SUITE.md ↗</a>
+      </div>
+      <p class="lede">
+        A music collection lives in local files and on shelves. The n-suite keeps them in one catalogue, plays them, checks them and cuts samples from them.
+        It then publishes the parts worth sharing to <b>Nostr</b>, where any reader can pick them up without an account. Events travel over ordinary Nostr relays, with a shared hub relay for discovery.
+        The long-term aim is collaboration: samples as shared building blocks, from sample to track to release, published and discussed over Nostr.
       </p>
+
+      <div class="flow" aria-label="How data flows through the suite">
+        <b>ndisc</b> publishes releases &amp; feed notes<i>→</i>relays<i>→</i><b>nview</b> · <b>glmps</b> read releases, <b>nplay</b> reads the feed
+        <br>
+        <b>ntree</b> · <b>nsmpl</b> publish clips &amp; samples<i>→</i>relay.fizx.uk<i>→</i>heard on <b>smpl</b>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="card-top"><span class="name">ndisc</span><span class="role">catalogue · publisher</span></div>
+          <p>The hub. It catalogues physical and digital releases in one library, importing folders of audio files and Discogs collection exports, and helps you find and merge duplicates. It fills in details from Discogs, writes tags back to files, and is the only app that publishes releases to Nostr.</p>
+          <div class="card-foot"><span class="chip">desktop</span><span class="chip">beta</span><a class="out" href="https://github.com/xjmzx/ndisc" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span class="name">nview</span><span class="role">mobile viewer</span></div>
+          <p>The catalogue in your pocket. It reads the releases, labels and feed that ndisc publishes, straight from Nostr relays. It's a viewer, not an editor: reactions are signed by a remote signer (NIP-46), so your nsec never touches the phone.</p>
+          <div class="card-foot"><span class="chip">android</span><span class="chip">ios</span><span class="chip">beta</span><a class="out" href="https://github.com/xjmzx/nview" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span class="name">nplay</span><span class="role">player</span></div>
+          <p>A local music and video player for the library ndisc catalogues. Audio runs on a native engine rather than in the web view. It has a collection tree and a sortable table, playlists, BPM, a spectrum visualiser and a library health check. It also follows ndisc's feed.</p>
+          <div class="card-foot"><span class="chip">desktop</span><span class="chip">beta</span><a class="out" href="https://github.com/xjmzx/nplay" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span class="name">ntree</span><span class="role">quality bench</span></div>
+          <p>A technician's bench for a FLAC library. A spectral scan catches files that claim to be lossless but were made from lossy sources. Around that sit a clip sampler with web-ready Opus copies, a filtered mirror-tree builder and a clip feed published to Nostr.</p>
+          <div class="card-foot"><span class="chip">desktop</span><span class="chip hi">stable</span><a class="out" href="https://github.com/xjmzx/ntree" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span class="name">nsmpl</span><span class="role">sample decks</span></div>
+          <p>A two-deck sample tool: loop regions, trim, fade and gain, and a two-deck mix bounce. BPM is set from a bar count and shared with the rest of the suite. Finished samples publish to Nostr and turn up on smpl.</p>
+          <div class="card-foot"><span class="chip">desktop</span><span class="chip">beta</span><a class="out" href="https://smpl.fizx.uk">smpl ↗</a><a class="out" href="https://github.com/xjmzx/nsmpl" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span class="name">nchat</span><span class="role">private messages</span></div>
+          <p>A small private messenger, not a social client: no feed, no timeline, only the keys you name. Messages are gift-wrapped (NIP-17): relays can see who a message is for, but not who sent it or exactly when.</p>
+          <div class="card-foot"><span class="chip">desktop</span><span class="chip">beta</span><a class="out" href="https://github.com/xjmzx/nchat" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        </article>
+      </div>
+
+      <div class="minor">
+        <div><span class="name">nping</span><span>Relay connectivity tester: timed connect and subscribe, NIP-11 relay info, and the exact errors.</span><a class="out" href="https://github.com/xjmzx/nping" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        <div><span class="name">ncover</span><span>GTK4 colour picker (screen picking on X11) that grew into a cover and label artwork tool.</span><a class="out" href="https://github.com/xjmzx/ncover" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+      </div>
     </section>
+
+    <!-- Web consumers -->
+    <section id="web">
+      <div class="head"><h2>on the web</h2></div>
+      <p class="lede">
+        The publishing loop closes in the browser. <b>glmps</b> is the web reader for the releases ndisc publishes, and its correct rendering is the proof that a release reads back correctly.
+        glmps and the sample site <b>smpl</b> each run in two themes, one per sister site.
+      </p>
+      <div class="grid">
+        <article class="card">
+          <div class="card-top"><span class="name">glmps.fizx.uk</span></div>
+          <p>The release reader in the fizx theme.</p>
+          <div class="card-foot"><span class="chip">web</span><a class="out" href="https://glmps.fizx.uk">open ↗</a></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="name">glmps.upleb.uk</span></div>
+          <p>The same reader in the upleb theme.</p>
+          <div class="card-foot"><span class="chip">web</span><a class="out" href="https://glmps.upleb.uk">open ↗</a></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="name">smpl.fizx.uk</span></div>
+          <p>Listen to the audio published to the hub relay: nsmpl samples, ntree clips and notes with audio attached.</p>
+          <div class="card-foot"><span class="chip">web</span><a class="out" href="https://smpl.fizx.uk">open ↗</a></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="name">smpl.upleb.uk</span></div>
+          <p>The same sample site in the upleb theme.</p>
+          <div class="card-foot"><span class="chip">web</span><a class="out" href="https://smpl.upleb.uk">open ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Dev tools -->
+    <section id="tools">
+      <div class="head"><h2>tools</h2></div>
+      <p class="lede">Built to answer questions that kept coming up while making everything above.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="card-top"><span class="name">gtrack</span><span class="role">repo health</span></div>
+          <p>A read-only tracker for the git checkouts under the folders you point it at, showing what state things are actually in. It flags version numbers that have drifted apart, unpushed work, stale lock files that silently block writes, and remotes that are unreachable, deleted or not tied to one account. It also shows each repo's latest tag.</p>
+          <div class="card-foot"><span class="chip">desktop</span><span class="chip">beta</span><a class="out" href="https://github.com/xjmzx/gtrack" target="_blank" rel="noopener noreferrer">repo ↗</a></div>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="name">psync</span><span class="role">drive sync</span></div>
+          <p>Proton ships no Drive client for Linux (as of September 2026). psync is a window over a drive-sync script. For each synced folder it shows files that exist only here, only on Drive or at different sizes, when it was last compared, and what Pull or Push will do before you run it.</p>
+          <div class="card-foot"><span class="chip">linux</span><span class="chip">early</span></div>
+        </article>
+      </div>
+    </section>
+
   </div>
 </main>
 
 <footer>
   <div class="wrap">
-    <div><a href="https://fizx.uk">fizx<span class="tld">.uk</span></a></div>
+    <div class="sites">
+      <a href="https://fizx.uk">fizx<span class="tld">.uk</span></a>
+      <a href="https://upleb.uk">upleb<span class="tld">.uk</span></a>
+    </div>
     <span class="made">✦ hand-built html</span>
   </div>
 </footer>
