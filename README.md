@@ -9,7 +9,7 @@ The monochrome member of a three-site family that shares one layout and a 2x2 ti
 | site | palette | repo |
 |---|---|---|
 | jmzx.uk | monochrome greys | `xjmzx/jmzx.uk` |
-| [fizx.uk](https://fizx.uk) | cool blue-green | `adjmx/fizx.uk` |
+| fizx.uk (server retired) | cool blue-green | `adjmx/fizx.uk` |
 | [upleb.uk](https://upleb.uk) | warm ambers | `macos-node/upleb.uk` |
 
 - `site/`: the webroot (`index.html`, `favicon.svg`)
